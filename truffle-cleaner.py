@@ -26,17 +26,17 @@ def main():
             else:
                 post_parsed+=1
                 parsed.append(data) 
+                print(line + '\n')
 
     # print basic findings
-    print("Total Results before parsing: " + str(pre_parsed))
-    print("Total Results after parsing: " + str(post_parsed))
-    print("Writing 'parsed.json'...")
+    print("Total Results before scrubbing: " + str(pre_parsed))
+    print("Total Results after scrubbing: " + str(post_parsed))
 
     # write parsed results file. (this logic is super fuzzy, but so is TruffleHog's)
-    with open(r'parsed.json', 'w') as fp:
-        json_string = json.dumps(parsed)
-        fp.write(json_string)
-        print('Done')
+    # with open(r'parsed.json', 'w') as fp:
+    #   json_string = json.dumps(parsed)
+    #    fp.write(json_string)
+    #    print('Done')
 
     # fail if secrets are detected
     if post_parsed > 0 and args.fail:
