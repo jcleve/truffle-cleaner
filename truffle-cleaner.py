@@ -9,19 +9,23 @@ def main():
     parser.add_argument('--fail', default=False, action="store_true")
     args = parser.parse_args()
 
-    # process trufflehog findings
     parsed = []
     pre_parsed = 0
     post_parsed = 0
-    with open(args.file) as f:
-        data = json.load(f)
-        for d in data:
+
+    # process trufflehog findings
+    with open(args.file) as file:
+        lines = file.readlines()
+        lines = [line.rstrip() for line in lines]
+
+        for line in lines:
+            data = json.loads(line)
             pre_parsed+=1
-            if d['Redacted'] == "":
+            if data['Redacted'] == "":
                 continue
             else:
                 post_parsed+=1
-                parsed.append(d)
+                parsed.append(data) 
 
     # print basic findings
     print("Total Results before parsing: " + str(pre_parsed))
