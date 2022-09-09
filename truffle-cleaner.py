@@ -18,16 +18,19 @@ def main():
     excluded = []
     pre_parsed = 0
     post_parsed = 0
+    truffle_hog_output_filename  = "json_results.json"
 
     # load allow list
     if args.exclude is not None and exists(args.exclude):
         with open(args.exclude, 'r') as stream:
             exclusions = yaml.safe_load(stream)
             for file in exclusions:
-                excluded.append(file)
+                # we can't include the json_results.json file. It negates the scan.
+                if file.lower() != truffle_hog_output_filename:
+                    excluded.append(file)
         print('Excluded files: ' + str(excluded))
     else:
-        print('No exclusion file passed...\n')
+        print('No exclusion file found...\n')
 
     # process trufflehog findings
     with open(args.file) as file:
@@ -61,8 +64,5 @@ def main():
     if post_parsed > 0 and args.fail:
         raise RuntimeError('Exposed secrets detected')
 
-
 if __name__ == "__main__":
     main()
-
-
